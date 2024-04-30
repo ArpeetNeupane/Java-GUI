@@ -23,7 +23,5 @@ def readingFile():
             value.append(list_[i]) #list named 'value' has all datas except first one
         
         d[key] = value #in dictionary d, each key is assigned it's value like it was in the text file
-    file.close
+    file.close()
     return d
-
-

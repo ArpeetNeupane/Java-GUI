@@ -1,5 +1,9 @@
 from read import readingFile
 from write import rentBills
+from write import returnBills
+from write import changingAvailabilityRent
+from write import changingAvailabilityReturn
+
 d = readingFile()
 
 dMonthAndPrice = {}
@@ -16,8 +20,8 @@ def landRentalFunctions():
     This function doesn't have a parameter and doesn't return anything either.
     """
     isRunning = True
-    global dMonthAndPrice #is made global because we need for both renting and returning
-    dict_ = {}
+    global dMonthAndPrice #is made global because we need for both renting and returning, dict for storing month and price
+    dict_ = {} #dictionary for storing rented values
     while isRunning == True: #running the loop until loopRunning is false
         try:
             print("Welcome To Land Rental.")
@@ -49,8 +53,8 @@ def landRentalFunctions():
                     try:
                          kittaId = int(input("\nEnter the Kitta number of the land you want to rent: "))
                          # Check if user inputted id is in list
-                         if(kittaId in d.keys() and d[kittaId][-1] == " Available"):
-                              #loop keeps running until user enters string
+                         if kittaId in d.keys() and d[kittaId][-1] == " Available":
+                                   #loop keeps running until user enters string
                                    isAskedName = False
                                    while isAskedName == False:
                                         userName = input("\nEnter your name: ")
@@ -59,7 +63,8 @@ def landRentalFunctions():
                                              if char not in "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ":
                                                   isString = False
                                                   break
-                                        if isString:
+                                        if isString == True and not userName == "" and not userName == " ":
+                                            #user cannot enter whitespace or null
                                              isAskedName = True
                                         else:
                                              print("Enter a valid name")
@@ -88,15 +93,18 @@ def landRentalFunctions():
                                    isAskedMonth = False
                                    while isAskedMonth == False:
                                         try:
-                                             rentMonth = int(input("\nHow many months do you want to rent it for? "))
+                                             rentsMonth = int(input("\nHow many months do you want to rent it for? "))
                                              isAskedMonth = True
                                         except ValueError:
                                              print("ValueError. Enter month in numbers.")
 
-                                   totalPrice = int(d[kittaId][3])*rentMonth
+                                   #changing availability in dictionary so that the user can't rent same land again
+                                   d[kittaId][4] = " Not Available"
+
+                                   totalPrice = int(d[kittaId][3])*rentsMonth
                                     
-                                   dMonthAndPrice[kittaId] = [rentMonth, totalPrice]
-                                   dict_[kittaId] = [d[kittaId][0], d[kittaId][1], d[kittaId][2], d[kittaId][3], str(rentMonth), str(totalPrice)]
+                                   dMonthAndPrice[kittaId] = [rentsMonth, totalPrice]
+                                   dict_[kittaId] = [d[kittaId][0], d[kittaId][1], d[kittaId][2], d[kittaId][3], str(rentsMonth), str(totalPrice)]
                                    
                                    repeatRent = True
                                    while repeatRent == True:
@@ -111,11 +119,16 @@ def landRentalFunctions():
                                              repeatRent = False
                                              #if user doesn't want to rent again, this while loop and upper rent again loop wont run again
                                              rentBills(dict_, userName, contactNum)
+
+                                             #calling function which changes data in land.txt from available to not available
+                                             #after user has rented
+                                             changingAvailabilityRent(d)
+                                             
                                         else:
                                              print("Choose option 'y' for yes and 'n' for no")
                          else:
                               if kittaId not in d.keys():
-                                   print("Our company doen't have access to that land.")
+                                   print("Our company doesn't have access to that land.")
                               else:
                                    print("Sorry, that land is not available right now. Please rent a land that is available.")
                                    
@@ -126,6 +139,110 @@ def landRentalFunctions():
 
             ##if user chooses option 2, land returning code runs
             elif userChoice == 2:
+                #loop keeps running until user enters string
+                isAskedName = False
+                while isAskedName == False:
+                    returnUserName = input("\nEnter your name: ")
+                    isString = True  #assuming user inputted string
+                    for char in returnUserName:
+                        if char not in "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ":
+                            isString = False
+                            break
+                        
+                    if isString == True and not returnUserName == "" and not returnUserName == " ":
+                    #user cannot enter whitespace or null
+                        isAskedName = True
+                    else:
+                        print("Enter a valid name")
+
+                isAskedContact = False
+                is10Numbered = False #assuming user didn't input 10 digits
+                while isAskedContact == False and is10Numbered == False:
+                    returnContactNum = input("\nEnter your phone number: ")
+                    isString = False
+                    for chars in returnContactNum:
+                        #converting each chars to lowercase to check ASCII value
+                        if "a" <= chars.lower() and chars.lower() <= "z":
+                            isString = True
+                            break
+                        
+                    if isString == True:
+                        print("Enter non-string phone number.")
+                    else:
+                        #finally, only if non-string 10 digits are entered, the entered number is accepted
+                        if len(returnContactNum) == 10:
+                            is10Numbered = True
+                            isAskedContact = True
+                        else:
+                            print("Enter 10 digits.")
+
+                returnAgain = True
+                isIdAvailable = True
+                while returnAgain == True:
+                    try:
+                        while isIdAvailable == True:
+                            returnId = int(input("\nWhich land would you like to return? (Enter Kitta Id): "))
+                            if returnId in d.keys():
+                                if d[returnId][4] == " Not Available":
+                                    d[returnId][4] = " Available"
+                                    isIdAvailable = False
+                                else:
+                                    print("The land with that id is yet to be rented.")
+                                    
+                            else:
+                                print("Our company doesn't have access to that land.")
+
+                        #handeling ValueError of rent month
+                        isAskedMonthrent = False
+                        while isAskedMonthrent == False:
+                            try:
+                                rentMonth = int(input("\nHow many months did you rent it for? "))
+                                isAskedMonthrent = True
+                            except ValueError:
+                                print("ValueError. Enter month in numbers.")
+
+                        #handeling ValueError of return month
+                        isAskedMonthreturn = False
+                        while isAskedMonthreturn == False:
+                            try:
+                                returnMonth = int(input("\nHow many months has it been since you rented it? "))
+                                isAskedMonthreturn = True
+
+                            except ValueError:
+                                print("ValueError. Enter month in numbers.")
+
+                        if returnMonth > rentMonth:
+                            countMonth = returnMonth - rentMonth
+                            priceAfterFine = int(d[returnId][3])*countMonth*1.05
+                            #5% fine for every month late
+                            totalPrice = priceAfterFine*returnMonth
+                        else:
+                            totalPrice = int(d[returnId][3])*rentMonth
+                                    
+                        dMonthAndPrice[returnId] = [rentMonth, totalPrice]
+                        dict_[returnId] = [d[returnId][0], d[returnId][1], d[returnId][2], d[returnId][3], str(returnMonth), str(totalPrice)]
+
+                        #asking the user if s/he wants to return rented land again
+                        repeatReturn = True
+                        while repeatReturn == True:
+                            returnLandRepeat = input("\nWould you like to return a rented land again? (y/n): ")
+                            if returnLandRepeat.lower() == "y":
+                                returnAgain = True
+                                repeatReturn = False
+                                isIdAvailable = True
+                            elif returnLandRepeat.lower() == "n":
+                                returnAgain = False
+                                repeatReturn = False
+                                #calling bill generating function
+                                print(dict_)
+                                returnBills(dict_, returnUserName, returnContactNum )
+                                changingAvailabilityReturn(d)
+                            else:
+                                print("Choose option 'y' for yes and 'n' for no")
+                            
+                    except ValueError:
+                        print("ValueError. Enter valid Kitta number from the above list.")
+                        
                 print("\nThank you for choosing our service. Would you like to rent/return again?\n\n")
 
             #if user chooses option 3, loop is terminated
@@ -140,6 +257,4 @@ def landRentalFunctions():
         #if numeric value is entered, the user is asked to try again
         except ValueError:
                 print("ValueError Found!! Try using available numbers to go forward with the operation.\n\n")
-    
 
-landRentalFunctions()
