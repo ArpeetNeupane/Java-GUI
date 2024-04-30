@@ -1,4 +1,4 @@
-101, Kathmandu, North, 4, 400000, Available
-102, Pokhara, East, 5, 500000, Not Available
-103, Lalitpur, South, 1, 10000, Available
-104, Bhaktapur, West, 9, 900000, Available
+990, Kathmandu, North, 4, 400000, Available
+865, Pokhara, East, 5, 500000, Not Available
+763, Lalitpur, South, 1, 100000, Available
+147, Bhaktapur, West, 9, 900000, Available
