@@ -61,8 +61,8 @@ def rentBills(d, name, phn):
     file.write("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600\n")
     print("\t+01-5147400")
     file.write("\t+01-5147400\n")
-    print("Date:", dateTimeNow.split("_")[0])
-    file.write("Date: "+ dateTimeNow.split("_")[0] + "\n")
+    print("\nDate:", dateTimeNow.split("_")[0])
+    file.write("\nDate: "+ dateTimeNow.split("_")[0] + "\n")
     print("Time:", dateTimeNow.split("_")[1] + "\n")
     file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n")
     file.write("\n")
@@ -77,9 +77,12 @@ def rentBills(d, name, phn):
     for key, value in d.items():
         print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5])
         file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\n")
-        totalPrice += int(value[5])
-    print("\n\nTotal Price of all lands rented: ", str(totalPrice) + "\n")
-    file.write("\n\nTotal Price of all lands rented: " + str(totalPrice) + "\n\n")
+        totalPrice += float(value[5])
+    print("\n\nTotal Price of all lands rented: ", str(totalPrice))
+    file.write("\n\nTotal Price of all lands rented: " + str(totalPrice) + "\n")
+    #13% VAT
+    print("Total Price after Value Added Tax(V.A.T): ",  str( round(totalPrice*1.13, 2) )) #rounding to 2 digits
+    file.write("Total Price after Value Added Tax(V.A.T): " + str( round(totalPrice*1.13, 2) ) + "\n")    
     print("-"*129)
     file.write("-"*129 + "\n")
     print("\n\n")
@@ -90,6 +93,7 @@ def rentBills(d, name, phn):
 def changingAvailabilityRent(d):
     """
     This function changes the availablity (on the text file) of the land after it has been rented
+    It has a parameter: d - dictionary which has details about land
     """
     file = open("land.txt", "w")
     
@@ -101,7 +105,7 @@ def changingAvailabilityRent(d):
     file.close()
 
 
-def returnBills(d, name, phn):
+def returnBills(d, name, phn, returnMonth, rentMonth, countMonth):
     """
     This function generates a bill/invoice after user returns land based on user's personal and rental information.
 
@@ -113,6 +117,9 @@ def returnBills(d, name, phn):
         d - a dictionary which contains values read from land.txt which is a text file containing lands' information.
         name - user's name
         phn - user's contact information
+        returnMonth - no. of month user returned land at
+        rentMonth - no. of month user rented land for
+        countMonth = difference between returnMonth and rentMonth
         
     This function doesn't return anything.
     """
@@ -140,8 +147,8 @@ def returnBills(d, name, phn):
     file.write("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600\n")
     print("\t+01-5147400")
     file.write("\t+01-5147400\n")
-    print("Date:", dateTimeNow.split("_")[0])
-    file.write("Date: "+ dateTimeNow.split("_")[0] + "\n")
+    print("\nDate:", dateTimeNow.split("_")[0])
+    file.write("\nDate: "+ dateTimeNow.split("_")[0] + "\n")
     print("Time:", dateTimeNow.split("_")[1] + "\n")
     file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n")
     file.write("\n")
@@ -154,20 +161,67 @@ def returnBills(d, name, phn):
 
     totalPrice = 0
     for key, value in d.items():
-        print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "     \t\t" + value[5])
-        file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "     \t\t" + value[5] + "\n")
-        totalPrice += int(value[5])
+        print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5])
+        file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\n")
+        totalPrice += float(value[5])
         
-    print("\n\nTotal Price of all lands rented: ", str(totalPrice) + "\n")
-    file.write("\n\nTotal Price of all lands rented: " + str(totalPrice) + "\n\n")
-    print("You were fined as you exceeded the time limit of the contract.")
-    file.write("You were fined as you exceeded the time limit of the contract.\n")
+    print("\n\nTotal Price of all lands rented: ", str(totalPrice))
+    file.write("\n\nTotal Price of all lands rented: " + str(totalPrice) + "\n")
+
+    if returnMonth > rentMonth:
+        print("You were fined as you exceeded the time limit of the contract.")
+        file.write("You were fined as you exceeded the time limit of the contract.\n")
+
+        finedPrice = FineForContractBreachers(totalPrice, countMonth)
+        print("Total Price after adding fine: ", str(finedPrice))
+        file.write("Total Price after adding fine: " + str(finedPrice) + "\n")
+
+        #13% VAT
+        vattedRoundedPrice =  roundingAndVat(finedPrice, 2) 
+        print("Total Price after Value Added Tax(V.A.T): ",  str(vattedRoundedPrice)) #rounding to 2 digits
+        file.write("Total Price after Value Added Tax(V.A.T): " + str(vattedRoundedPrice) + "\n")
+
+    else:
+        vattedRoundedPrice =  roundingAndVat(totalPrice, 2) 
+        #13% VAT
+        print("Total Price after Value Added Tax(V.A.T): ",  str(vattedRoundedPrice)) #rounding to 2 digits
+        file.write("Total Price after Value Added Tax(V.A.T): " + str(vattedRoundedPrice) + "\n")
+            
     print("-"*129)
     file.write("-"*129 + "\n")
-    print("\n\n")
+    print("\n")
     file.write("\n\n")
     file.close()
     
+def FineForContractBreachers(totalAmount, countMonth):
+    """
+    This function adds fine when the contract is breached, i.e., returnMonth>rentMonth
+    It has 2 parameters:
+    totalAmount - amount before fine
+    countMonth = difference between returnMonth and rentMonth
+    It returns the amount after fine is added
+    """
+    totalAmount += 0.1*totalAmount*countMonth
+    return totalAmount
+
+
+def roundingAndVat(totalAmount, decimalPlace):
+    """
+    This function rounds the given number to the specified number of decimal places, i.e., returnMonth>rentMonth
+    It has parameters:
+    totalAmount - amount after fine before V.A.T, the number to round-off
+    decimalPlace - the number of decimal places to round-off to
+    It returns the amount after V.A.T has been added
+    """
+    ##shifting the decimal to the right by number user provides
+    totalAmount = 1.13 * totalAmount
+    factor = 10 ** decimalPlace
+    roundedNumber = totalAmount * factor
+    roundedNumber += 0.5
+    roundedNumber = int(roundedNumber)
+    #shifting decimal point back to original position
+    roundedNumber /= factor
+    return roundedNumber
     
 
 def changingAvailabilityReturn(d):

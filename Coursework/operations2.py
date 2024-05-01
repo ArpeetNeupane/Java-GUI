@@ -23,7 +23,7 @@ def landRentalFunctions():
     global dMonthAndPrice #is made global because we need for both renting and returning, dict for storing month and price
     dict_ = {} #dictionary for storing rented values
     while isRunning == True: #running the loop until loopRunning is false
-        try:
+        #try:
             print("Welcome To Land Rental.")
             print("What would you like to do?")
             print("1 - Rent a land")
@@ -178,7 +178,7 @@ def landRentalFunctions():
                 returnAgain = True
                 isIdAvailable = True
                 while returnAgain == True:
-                    try:
+                    #try:
                         while isIdAvailable == True:
                             returnId = int(input("\nWhich land would you like to return? (Enter Kitta Id): "))
                             if returnId in d.keys():
@@ -211,14 +211,13 @@ def landRentalFunctions():
                             except ValueError:
                                 print("ValueError. Enter month in numbers.")
 
-                        totalPrice = ( int(d[returnId][3]) )*returnMonth
-                        countMonth = 1
-
                         if returnMonth > rentMonth:
                             countMonth = returnMonth - rentMonth
                             extraMonthPrice = ( int(d[returnId][3]) )*returnMonth
                             #5% fine for every month late
-                            totalPriceWithFine = extraMonthPrice*countMonth*1.05
+                            totalPrice = extraMonthPrice*countMonth*1.05
+                        else:
+                            totalPrice = ( int(d[returnId][3]) )*returnMonth
                                     
                         dMonthAndPrice[returnId] = [rentMonth, totalPrice]
                         dict_[returnId] = [str( d[returnId][0] ), d[returnId][1], d[returnId][2], d[returnId][3], str(returnMonth), str(totalPrice)]
@@ -235,15 +234,15 @@ def landRentalFunctions():
                                 returnAgain = False
                                 repeatReturn = False
                                 #calling bill generating function
-                                returnBills(dict_, returnUserName, returnContactNum, returnMonth, rentMonth, countMonth)
+                                returnBills(dict_, returnUserName, returnContactNum, returnMonth, rentMonth)
                                 changingAvailabilityReturn(d) #changing availability in land.txt
                             else:
                                 print("Choose option 'y' for yes and 'n' for no")
                             
-                    except ValueError:
-                        print("ValueError. Enter valid Kitta number from the above list.")
+                    #except ValueError:
+                        #print("ValueError. Enter valid Kitta number from the above list.")
                         
-                print("Thank you for choosing our service. Would you like to rent/return again?\n\n")
+                print("\nThank you for choosing our service. Would you like to rent/return again?\n\n")
 
             #if user chooses option 3, loop is terminated
             elif userChoice == 3:
@@ -255,6 +254,6 @@ def landRentalFunctions():
                 print("\nInvalid Input! Try Again with available numbers.\n\n")
 
         #if numeric value is entered, the user is asked to try again
-        except ValueError:
-                print("ValueError Found!! Try using available numbers to go forward with the operation.\n\n")
+        #except ValueError:
+                #print("ValueError Found!! Try using available numbers to go forward with the operation.\n\n")
 
