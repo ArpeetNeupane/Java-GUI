@@ -125,15 +125,15 @@ def landRentalFunctions():
                                              
                                         else:
                                              print("Choose option 'y' for yes and 'n' for no")
-                         else:
-                              if kittaId not in d.keys():
-                                   print("Our company doesn't have access to that land.")
-                              else:
-                                   print("Sorry, that land is not available right now. Please rent a land that is available.")
+                        else:
+                            if kittaId not in d.keys():
+                                print("Our company doesn't have access to that land.")
+                            else:
+                                print("Sorry, that land is not available right now. Please rent a land that is available.")
                                    
                          
                     except ValueError:
-                         print("ValueError. Enter a valid Kitta number from the above list.")
+                        print("ValueError. Enter a valid Kitta number from the above list.")
 
 
             ##if user chooses option 2, land returning code runs

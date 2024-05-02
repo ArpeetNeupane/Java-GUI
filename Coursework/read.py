@@ -7,12 +7,12 @@ def readingFile():
     There are no parameters in this function.
 
     Returns:
-    Dictionary: d, keys are integers and values are lists.
+    Dictionary: landDict, keys are integers and values are lists.
     """
     
     file = open("land.txt", "r")
     lines = file.readlines()
-    d = {}
+    landDict = {}
     for line in lines:
         line = line.replace("\n", "") #removing new line at the end of each line using replace  function
         list_ = line.split(",") #splitting into parts wherever , is found
@@ -22,6 +22,6 @@ def readingFile():
         for i in range(1,len(list_)):
             value.append(list_[i]) #list named 'value' has all datas except first one
         
-        d[key] = value #in dictionary d, each key is assigned it's value like it was in the text file
+        landDict[key] = value #in dictionary landDict, each key is assigned it's value like it was in the text file
     file.close()
-    return d
+    return landDict

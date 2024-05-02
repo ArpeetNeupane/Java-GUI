@@ -1,7 +1,7 @@
 import datetime
 from read import readingFile
 
-d = readingFile()
+landDict = readingFile()
 
 def currentDateTime():
     """
@@ -22,7 +22,7 @@ def currentDateTime():
 currentDateTime()
 
 
-def rentBills(d, name, phn):
+def rentBills(landDict, name, phn, address):
     """
     This function generates a bill/invoice after the user rents land based on user's personal and rental information.
 
@@ -31,9 +31,10 @@ def rentBills(d, name, phn):
     the user's name. The bill can also be viewed in the text file.
     
     This function takes 3 parameters namely; d, name, phn
-        d - a dictionary which contains values read from land.txt which is a text file containing lands' information.
+        landDict - a dictionary which contains values read from land.txt which is a text file containing lands' information.
         name - user's name
         phn - user's contact information
+        address - user's address; living location
         
     This function doesn't return anything.
     """
@@ -55,26 +56,28 @@ def rentBills(d, name, phn):
     file.write("Bill Type: Rent\n")
     print("Billed To:",  name)
     file.write("Billed To: " + name + "\n")
-    print("Your Contact Info: ", phn + "\n")
-    file.write("Your Contact Info: " + phn + "\n\n")
+    print("Provided Contact Info: ", phn)
+    file.write("Provided Contact Info: " + phn + "\n")
+    print("Provided Address: ", address + "\n")
+    file.write("Provided Address: " + address + "\n\n")
     print("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600")
     file.write("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600\n")
     print("\t+01-5147400")
     file.write("\t+01-5147400\n")
     print("\nDate:", dateTimeNow.split("_")[0])
     file.write("\nDate: "+ dateTimeNow.split("_")[0] + "\n")
-    print("Time:", dateTimeNow.split("_")[1] + "\n")
-    file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n")
-    file.write("\n")
+    print("Time:", dateTimeNow.split("_")[1] + "\n\n")
+    file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n\n")
     
-
+    print("-"*129)
+    file.write("-"*129 + "\n")
     print("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price")
     print("-"*129)
     file.write("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price\n")
     file.write("-"*129 + "\n")
 
     totalPrice = 0
-    for key, value in d.items():
+    for key, value in landDict.items():
         print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5])
         file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\n")
         totalPrice += float(value[5])
@@ -90,14 +93,14 @@ def rentBills(d, name, phn):
     file.close()
 
 
-def changingAvailabilityRent(d):
+def changingAvailabilityRent(landDict):
     """
     This function changes the availablity (on the text file) of the land after it has been rented
-    It has a parameter: d - dictionary which has details about land
+    It has a parameter: landDict - dictionary which has details about land
     """
     file = open("land.txt", "w")
     
-    for key, value in d.items():
+    for key, value in landDict.items():
             file.write(str(key) + ",")  #converting key to string explicitly
             file.write(",".join(value))  #joining the items in the value list with ", " separator
             file.write("\n") #next line after each iteration
@@ -105,7 +108,7 @@ def changingAvailabilityRent(d):
     file.close()
 
 
-def returnBills(d, name, phn, returnMonth, rentMonth, countMonth):
+def returnBills(landDict, name, phn, address, returnMonth, rentMonth, countMonth):
     """
     This function generates a bill/invoice after user returns land based on user's personal and rental information.
 
@@ -114,7 +117,7 @@ def returnBills(d, name, phn, returnMonth, rentMonth, countMonth):
     the user's name. The bill can also be viewed in the text file.
     
     This function takes 3 parameters namely; d, name, phn
-        d - a dictionary which contains values read from land.txt which is a text file containing lands' information.
+        landDict - a dictionary which contains values read from land.txt which is a text file containing lands' information.
         name - user's name
         phn - user's contact information
         returnMonth - no. of month user returned land at
@@ -131,78 +134,58 @@ def returnBills(d, name, phn, returnMonth, rentMonth, countMonth):
     #the file is opened and "Hello" user is written on it
     file = open(fileName, "w")
 
-    print("-"*129)
-    file.write("-"*129 + "\n")
-    print("\t\t\t\t\t\t\tInvoice\n")
-    file.write("\t\t\t\t\t\t\t\tInvoice\n")
-    print("-"*129 + "\n")
-    file.write("-"*129 + "\n\n")
+    print("-"*165)
+    file.write("-"*165 + "\n")
+    print("\t\t\t\t\t\t\t\t    Invoice\n")
+    file.write("\t\t\t\t\t\t\t\t\t    Invoice\n")
+    print("-"*165 + "\n")
+    file.write("-"*165 + "\n\n")
     print("Bill Type: Return")
     file.write("Bill Type: Return\n")
     print("Billed To:",  name)
     file.write("Billed To: " + name + "\n")
-    print("Your Contact Info: ", phn + "\n")
-    file.write("Your Contact Info: " + phn + "\n\n")
+    print("Provided Contact Info: ", phn)
+    file.write("Provided Contact Info: " + phn + "\n")
+    print("Provided Address: ", address + "\n")
+    file.write("Provided Address: " + address + "\n\n")
     print("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600")
     file.write("Pay To: TechnoPropertyNepal\n\tSeti O.p. Marg 556\n\tKathmandu 44600\n")
     print("\t+01-5147400")
     file.write("\t+01-5147400\n")
     print("\nDate:", dateTimeNow.split("_")[0])
     file.write("\nDate: "+ dateTimeNow.split("_")[0] + "\n")
-    print("Time:", dateTimeNow.split("_")[1] + "\n")
-    file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n")
-    file.write("\n")
+    print("Time:", dateTimeNow.split("_")[1] + "\n\n")
+    file.write("Time: "+ dateTimeNow.split("_")[1] + "\n\n\n")
     
+    print("-"*165)
+    file.write("-"*165 + "\n")
+    print("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price \t    Total Price After Fine")
+    print("-"*165)
+    file.write("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price \t    Total Price After Fine\n")
+    file.write("-"*165 + "\n")
 
-    print("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price")
-    print("-"*129)
-    file.write("Kitta \t\t   City  \t\t  Direction \t\t Anna\t        Price \t\t Duration \t    Total Price\n")
-    file.write("-"*129 + "\n")
-
-    totalPrice = 0
-    for key, value in d.items():
-        print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5])
-        file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\n")
-        totalPrice += float(value[5])
+    totalPriceAfterFine = 0
+    for key, value in landDict.items():
+        print(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\t\t\t" + value[6])
+        file.write(str(key) + "\t\t" + value[0] + "\t\t  " + value[1] + " \t\t " + value[2] + "\t\t" + value[3] + " \t\t    " + value[4] + "    \t\t" + value[5] + "\t\t\t" + value[6] + "\n")
+        totalPriceAfterFine += float(value[6])
         
-    print("\n\nTotal Price of all lands rented: ", str(totalPrice))
-    file.write("\n\nTotal Price of all lands rented: " + str(totalPrice) + "\n")
+    print("\n\nTotal Amount of all lands rented: ", str(totalPriceAfterFine))
+    file.write("\n\nTotal Price of all lands rented: " + str(totalPriceAfterFine) + "\n")
 
     if returnMonth > rentMonth:
         print("You were fined as you exceeded the time limit of the contract.")
         file.write("You were fined as you exceeded the time limit of the contract.\n")
-
-        finedPrice = FineForContractBreachers(totalPrice, countMonth)
-        print("Total Price after adding fine: ", str(finedPrice))
-        file.write("Total Price after adding fine: " + str(finedPrice) + "\n")
-
-        #13% VAT
-        vattedRoundedPrice =  roundingAndVat(finedPrice, 2) 
-        print("Total Price after Value Added Tax(V.A.T): ",  str(vattedRoundedPrice)) #rounding to 2 digits
-        file.write("Total Price after Value Added Tax(V.A.T): " + str(vattedRoundedPrice) + "\n")
-
-    else:
-        vattedRoundedPrice =  roundingAndVat(totalPrice, 2) 
-        #13% VAT
-        print("Total Price after Value Added Tax(V.A.T): ",  str(vattedRoundedPrice)) #rounding to 2 digits
-        file.write("Total Price after Value Added Tax(V.A.T): " + str(vattedRoundedPrice) + "\n")
+        
+    vattedRoundedPrice =  roundingAndVat(totalPriceAfterFine, 2) 
+    #13% VAT
+    print("Total Price after Value Added Tax(V.A.T): ",  str(vattedRoundedPrice)) #rounding to 2 digits
+    file.write("Total Price after Value Added Tax(V.A.T): " + str(vattedRoundedPrice) + "\n")
             
-    print("-"*129)
-    file.write("-"*129 + "\n")
-    print("\n")
-    file.write("\n\n")
+    print("-"*165)
+    file.write("-"*165 + "\n")
+    file.write("\n")
     file.close()
-    
-def FineForContractBreachers(totalAmount, countMonth):
-    """
-    This function adds fine when the contract is breached, i.e., returnMonth>rentMonth
-    It has 2 parameters:
-    totalAmount - amount before fine
-    countMonth = difference between returnMonth and rentMonth
-    It returns the amount after fine is added
-    """
-    totalAmount += 0.1*totalAmount*countMonth
-    return totalAmount
 
 
 def roundingAndVat(totalAmount, decimalPlace):
@@ -224,13 +207,13 @@ def roundingAndVat(totalAmount, decimalPlace):
     return roundedNumber
     
 
-def changingAvailabilityReturn(d):
+def changingAvailabilityReturn(landDict):
     """
     This function changes the availablity (on the text file) of the land after it has been returned
     """
     file = open("land.txt", "w")
     
-    for key, value in d.items():
+    for key, value in landDict.items():
             file.write(str(key) + ",")  #converting key to string explicitly
             file.write(",".join(value))  #joining the items in the value list with ", " separator
             file.write("\n") #next line after each iteration
