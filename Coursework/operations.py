@@ -6,26 +6,36 @@ from write import changingAvailabilityReturn
 
 landDict = readingFile()
 
-dMonthAndPrice = {}
 def landRentalFunctions():
     """This function implements a land rental system.
-
-    It provides a menu to the user with 3 options being: 1. to rent land, 2. return rented landor 3. exit the system. The user is asked to
-    enter their choice, and the repective choice is executed. If the user wants to rent, s/he is shown the land list, and prompts the user to
-    choose a land to rent, and asks the user for their personal information such as name, and phone number. Then, the user is asked
-    if s/he wants to rent again. If yes, the above procedure is repeated and if no, their bill is generated. If the user wants to return a
-    rented land, they are asked what time they have returned the land and their bill is generated again. However if overdue on time, they
-    also have to pay extra. If the user wants to exit, they can!
-
+    It provides a menu to the user with 3 options being:
+    1. to rent land
+    2. return rented landor
+    3. exit the system.
     This function doesn't have a parameter and doesn't return anything either.
     """
     isRunning = True
-    global dMonthAndPrice #is made global because we need for both renting and returning, dict for storing month and price
     dict_ = {} #dictionary for storing rented values
     while isRunning == True: #running the loop until loopRunning is false
         try:
+            #showing lands that the company controls in a list
+            print("\n")
+            print("-"*105)
+            print("\t\t\t\t\t\t Land List")
+            print("-"*105)
+            print("\nKitta \t\t City    \t\tDirection        Anna\t        Price\t\t Availability")
+            print("_"*105)
+                
+            file = open("land.txt", "r")
+            for line in file:
+                print(line.replace(",", "\t\t"))
+                #firstly replacing , with double tab space and then printing file content
+                print("_"*105)
+                #printing 105 _
+            file.close()
+            
             print("Welcome To Land Rental.")
-            print("What would you like to do?")
+            print("\n\nWhat would you like to do?")
             print("1 - Rent a land")
             print("2 - Return a rented land")
             print("3 - Exit")
@@ -34,8 +44,13 @@ def landRentalFunctions():
             #if user chooses option 1, land renting code runs
             if userChoice == 1:
                 dict_ = {} #making dict_ empty for the next time the loop runs
-                print("\n\t\t\t\t\t This is the land list.\n\n")
-                print("Kitta \t\t City    \t\tDirection        Anna\t        Price\t\t Availability")
+
+                #showing lands that the company controls in a list
+                print("\n")
+                print("-"*105)
+                print("\t\t\t\t\t\t Land List")
+                print("-"*105)
+                print("\nKitta \t\t City    \t\tDirection        Anna\t        Price\t\t Availability")
                 print("_"*105)
                 
                 file = open("land.txt", "r")
@@ -111,8 +126,14 @@ def landRentalFunctions():
                             isAskedMonth = False
                             while isAskedMonth == False:
                                 try:
-                                    rentsMonth = int(input("\nHow many months do you want to rent it for? "))
-                                    isAskedMonth = True
+                                    monthZero = True
+                                    while monthZero == True:
+                                        rentsMonth = int(input("\nHow many months do you want to rent it for? "))
+                                        if rentsMonth <= 0:
+                                            print("Rent for at least one month.")
+                                        else:
+                                            monthZero = False
+                                            isAskedMonth = True
                                 except ValueError:
                                     print("ValueError. Enter month in numbers.")
 
@@ -121,13 +142,28 @@ def landRentalFunctions():
 
                             totalPrice = int(landDict[kittaId][3])*rentsMonth
                                     
-                            dMonthAndPrice[kittaId] = [rentsMonth, totalPrice]
                             dict_[kittaId] = [landDict[kittaId][0], landDict[kittaId][1], landDict[kittaId][2], landDict[kittaId][3], str(rentsMonth), str(totalPrice)]
                                    
                             repeatRent = True
                             while repeatRent == True:
                                 rentAgain = input("\nDo you want to rent again? (y/n): ")
                                 if rentAgain.lower() == "y":
+                                    #showing lands that the company controls in a list
+                                    print("\n")
+                                    print("-"*105)
+                                    print("\t\t\t\t\t\t Land List")
+                                    print("-"*105)
+                                    print("\nKitta \t\t City    \t\tDirection        Anna\t        Price\t\t Availability")
+                                    print("_"*105)
+                                    
+                                    file = open("land.txt", "r")
+                                    for line in file:
+                                        print(line.replace(",", "\t\t"))
+                                        #firstly replacing , with double tab space and then printing file content
+                                        print("_"*105)
+                                        #printing 105 _
+                                    file.close()
+                                    
                                     rentAgainBool = True
                                     repeatRent = False
                                     #if user wants to rent again, this while loop wont run again, but upper loop to rent runs again
@@ -255,7 +291,6 @@ def landRentalFunctions():
                             totalPriceAfterFine = 0
                             totalPriceAfterFine = ( (int(landDict[returnId][3]))*returnMonth ) + FineForContractBreachers(totalPrice, countMonth)
                             
-                        dMonthAndPrice[returnId] = [rentMonth, totalPrice]
                         dict_[returnId] = [landDict[returnId][0], landDict[returnId][1], landDict[returnId][2], landDict[returnId][3], str(returnMonth), str(totalPrice), str(totalPriceAfterFine)]
 
                         #asking the user if s/he wants to return rented land again
@@ -263,6 +298,22 @@ def landRentalFunctions():
                         while repeatReturn == True:
                             returnLandRepeat = input("\nWould you like to return a rented land again? (y/n): ")
                             if returnLandRepeat.lower() == "y":
+                                #showing lands that the company controls in a list
+                                print("\n")
+                                print("-"*105)
+                                print("\t\t\t\t\t\t Land List")
+                                print("-"*105)
+                                print("\nKitta \t\t City    \t\tDirection        Anna\t        Price\t\t Availability")
+                                print("_"*105)
+                                    
+                                file = open("land.txt", "r")
+                                for line in file:
+                                    print(line.replace(",", "\t\t"))
+                                    #firstly replacing , with double tab space and then printing file content
+                                    print("_"*105)
+                                    #printing 105 _
+                                file.close()
+                                
                                 returnAgain = True
                                 repeatReturn = False
                                 isIdAvailable = True
@@ -299,9 +350,9 @@ def landRentalFunctions():
 def FineForContractBreachers(totalPrice, countMonth):
     """
     This function adds fine when the contract is breached, i.e., returnMonth>rentMonth
-    It has 2 parameters:
-    totalPrice - amount before fine
-    countMonth = difference between returnMonth and rentMonth
+    
+    It has 2 parameters: totalPrice, countMonth
+
     It returns the total price after fine is added
     """
     totalPriceAfterFine = 0

@@ -25,16 +25,8 @@ currentDateTime()
 def rentBills(landDict, name, phn, address):
     """
     This function generates a bill/invoice after the user rents land based on user's personal and rental information.
-
-    This function generates a bill after the user has entered his/her information and land renting information and also writes
-    it on a text file which has a unique name every time it is generated as the name is based on current date and time and
-    the user's name. The bill can also be viewed in the text file.
     
-    This function takes 3 parameters namely; d, name, phn
-        landDict - a dictionary which contains values read from land.txt which is a text file containing lands' information.
-        name - user's name
-        phn - user's contact information
-        address - user's address; living location
+    This function takes 3 parameters namely; landDict, name, phn, address
         
     This function doesn't return anything.
     """
@@ -96,7 +88,7 @@ def rentBills(landDict, name, phn, address):
 def changingAvailabilityRent(landDict):
     """
     This function changes the availablity (on the text file) of the land after it has been rented
-    It has a parameter: landDict - dictionary which has details about land
+    It has a parameter: landDict
     """
     file = open("land.txt", "w")
     
@@ -111,18 +103,8 @@ def changingAvailabilityRent(landDict):
 def returnBills(landDict, name, phn, address, returnMonth, rentMonth, countMonth):
     """
     This function generates a bill/invoice after user returns land based on user's personal and rental information.
-
-    This function generates a bill after the user has chosen which land to return and also writes
-    it on a text file which has a unique name every time it is generated as the name is based on current date and time and
-    the user's name. The bill can also be viewed in the text file.
     
-    This function takes 3 parameters namely; d, name, phn
-        landDict - a dictionary which contains values read from land.txt which is a text file containing lands' information.
-        name - user's name
-        phn - user's contact information
-        returnMonth - no. of month user returned land at
-        rentMonth - no. of month user rented land for
-        countMonth = difference between returnMonth and rentMonth
+    This function takes 3 parameters namely; landDict, name, phn, address, returnMonth, rentMonth, countMonth.
         
     This function doesn't return anything.
     """
@@ -192,8 +174,7 @@ def roundingAndVat(totalAmount, decimalPlace):
     """
     This function rounds the given number to the specified number of decimal places, i.e., returnMonth>rentMonth
     It has parameters:
-    totalAmount - amount after fine before V.A.T, the number to round-off
-    decimalPlace - the number of decimal places to round-off to
+    totalAmount, decimalPlace
     It returns the amount after V.A.T has been added
     """
     ##shifting the decimal to the right by number user provides
@@ -210,6 +191,7 @@ def roundingAndVat(totalAmount, decimalPlace):
 def changingAvailabilityReturn(landDict):
     """
     This function changes the availablity (on the text file) of the land after it has been returned
+    Has a parameter - landDict.
     """
     file = open("land.txt", "w")
     
