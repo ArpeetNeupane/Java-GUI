@@ -11,7 +11,7 @@ def readingFile():
     lines = file.readlines()
     landDict = {}
     for line in lines:
-        line = line.replace("\n", "") #removing new line at the end of each line using replace  function
+        line = line.replace("\n", "") #removing new line at the end of each line using replace function
         list_ = line.split(",") #splitting into parts wherever , is found
         
         key = int(list_[0]) #the first item of each line is assigned to variabe 'key'

@@ -1,19 +1,17 @@
 from read import readingFile
 from write import rentBills
 from write import returnBills
-from write import changingAvailabilityRent
-from write import changingAvailabilityReturn
+from write import changingAvailability
+from write import changingAvailability
 
 landDict = readingFile()
 dict_ = {}
 
-isRunning = True
 def renting():
     """
     This function asks users for information about them and the land they want to rent and the land is rented to the user.
     """
     dict_ = {} #making dict_ empty for the next time the loop runs
-    uniqueUserDict = {}
 
     #name - loop keeps running until user enters string
     isAskedName = False
@@ -104,7 +102,7 @@ def renting():
                                     isAskedMonth = True
                         except ValueError:
                             print("ValueError. Enter month in numbers.")
-
+                
                 #changing availability in dictionary so that the user can't rent same land again
                 landDict[kittaId][4] = " Not Available"
 
@@ -116,8 +114,8 @@ def renting():
                 while repeatRent == True:
                         rentAgain = input("\nDo you want to rent again? (y/n): ")
                         if rentAgain.lower() == "y":
-                            #changing availability in dictionary so when list is printed, list is updated
-                            changingAvailabilityRent(landDict)
+                            #changing availability in text file so when list is printed, list is updated
+                            changingAvailability(landDict)
                               
                             #showing lands that the company controls in a list
                             print("\n")
@@ -147,7 +145,7 @@ def renting():
                             rentBills(dict_, userName, contactNum, userAddress)
                             #calling function which changes data in land.txt from available to not available
                             #after user has rented
-                            changingAvailabilityRent(landDict)
+                            changingAvailability(landDict)
                                    
                         else:
                             print("Choose option 'y' for yes and 'n' for no")
@@ -257,6 +255,7 @@ def returning():
                 except ValueError:
                     print("ValueError. Enter month in numbers.")
 
+
             totalPrice = ( int(landDict[returnId][3]) )*returnMonth
             countMonth = 1
             totalPriceAfterFine = ( int(landDict[returnId][3]) )*returnMonth #if not fined, totalPriceAfterFine = totalPrice
@@ -264,7 +263,7 @@ def returning():
             if returnMonth > rentMonth:
                 countMonth = returnMonth - rentMonth
                 totalPriceAfterFine = 0
-                totalPriceAfterFine = ( (int(landDict[returnId][3]))*returnMonth ) + FineForContractBreachers(totalPrice, countMonth)
+                totalPriceAfterFine = ( (int(landDict[returnId][3]))*returnMonth ) + fineForContractBreachers(totalPrice, countMonth)
                     
             dict_[returnId] = [landDict[returnId][0], landDict[returnId][1], landDict[returnId][2], landDict[returnId][3], str(returnMonth), str(totalPrice), str(totalPriceAfterFine)]
 
@@ -273,8 +272,8 @@ def returning():
             while repeatReturn == True:
                 returnLandRepeat = input("\nWould you like to return a rented land again? (y/n): ")
                 if returnLandRepeat.lower() == "y":
-                    #changing availability in dictionary so when list is printed, list is updated
-                    changingAvailabilityReturn(landDict)
+                    #changing availability in text file so when list is printed, list is updated
+                    changingAvailability(landDict)
                          
                     #showing lands that the company controls in a list
                     print("\n")
@@ -301,7 +300,7 @@ def returning():
                     #calling bill generating function
                     print("\n\n")
                     returnBills(dict_, returnUserName, returnContactNum, userAddress, returnMonth, rentMonth, countMonth)
-                    changingAvailabilityReturn(landDict) #changing availability in land.txt
+                    changingAvailability(landDict) #changing availability in land.txt
                 else:
                     print("Choose option 'y' for yes and 'n' for no")
                     
@@ -311,7 +310,7 @@ def returning():
 
     
 
-def FineForContractBreachers(totalPrice, countMonth):
+def fineForContractBreachers(totalPrice, countMonth):
     """
     This function adds fine when the contract is breached, i.e., returnMonth>rentMonth
     

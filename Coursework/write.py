@@ -22,9 +22,9 @@ def currentDateTime():
 currentDateTime()
 
 
-def writeToLandFile(landDict):
+def changingAvailability(landDict):
     """
-    Writes land data the file: land.txt
+    Changes availablity of land on the file: land.txt
 
     Parameter: landDict
     """
@@ -63,10 +63,10 @@ def rentBills(landDict, name, phn, address):
 
     print("="*130)
     file.write("="*130 + "\n")
-    print("\t\t\t\t\t\t\t   TechnoPropertyNepal\n\t\t\t\t\t\t\t   Seti O.p. Marg 556\n\t\t\t\t\t\t\t   Kathmandu 44600")
-    file.write("\t\t\t\t\t\t\t   TechnoPropertyNepal\n\t\t\t\t\t\t\t   Seti O.p. Marg 556\n\t\t\t\t\t\t\t   Kathmandu 44600\n")
-    print("\t\t\t\t\t\t\t   +01-5147400")
-    file.write("\t\t\t\t\t\t\t   +01-5147400\n")
+    print("\t\t\t\t\t\t\t   Techno Property Nepal\n\t\t\t\t\t\t\t    Seti O.p. Marg 556\n\t\t\t\t\t\t\t     Kathmandu 44600")
+    file.write("\t\t\t\t\t\t\t   Techno Property Nepal\n\t\t\t\t\t\t\t    Seti O.p. Marg 556\n\t\t\t\t\t\t\t     Kathmandu 44600\n")
+    print("\t\t\t\t\t\t\t       +01-5147400")
+    file.write("\t\t\t\t\t\t\t       +01-5147400\n")
     print("="*130)
     file.write("="*130 + "\n")
     print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t Date: " + dateTimeNow.split("_")[0])
@@ -96,20 +96,12 @@ def rentBills(landDict, name, phn, address):
     print("-"*130)
     file.write("-"*130 + "\n")
     
-    print("\n\nTotal Amount of all lands rented: ", str(totalPrice))
-    file.write("\n\nTotal Amount of all lands rented: " + str(totalPrice) + "\n")
+    print("\n\nFinal Amount of all lands rented: ", str(totalPrice))
+    file.write("\n\nFinal Amount of all lands rented: " + str(totalPrice) + "\n")
     
     print("="*130)
     file.write("="*130 + "\n")
     file.close()
-
-
-def changingAvailabilityRent(landDict):
-    """
-    This function changes the availablity (on the text file) of the land after it has been rented
-    It has a parameter: landDict
-    """
-    writeToLandFile(landDict)
 
 
 def returnBills(landDict, name, phn, address, returnMonth, rentMonth, countMonth):
@@ -130,10 +122,10 @@ def returnBills(landDict, name, phn, address, returnMonth, rentMonth, countMonth
 
     print("="*166)
     file.write("="*166 + "\n")
-    print("\t\t\t\t\t\t\t\t\t TechnoPropertyNepal\n\t\t\t\t\t\t\t\t\t Seti O.p. Marg 556\n\t\t\t\t\t\t\t\t\t Kathmandu 44600")
-    file.write("\t\t\t\t\t\t\t\t\t TechnoPropertyNepal\n\t\t\t\t\t\t\t\t\t Seti O.p. Marg 556\n\t\t\t\t\t\t\t\t\t Kathmandu 44600\n")
-    print("\t\t\t\t\t\t\t\t\t +01-5147400")
-    file.write("\t\t\t\t\t\t\t\t\t +01-5147400\n")
+    print("\t\t\t\t\t\t\t\t\t Techno Property Nepal\n\t\t\t\t\t\t\t\t\t  Seti O.p. Marg 556\n\t\t\t\t\t\t\t\t\t   Kathmandu 44600")
+    file.write("\t\t\t\t\t\t\t\t\t Techno Property Nepal\n\t\t\t\t\t\t\t\t\t  Seti O.p. Marg 556\n\t\t\t\t\t\t\t\t\t   Kathmandu 44600\n")
+    print("\t\t\t\t\t\t\t\t\t     +01-5147400")
+    file.write("\t\t\t\t\t\t\t\t\t     +01-5147400\n")
     print("="*166)
     file.write("="*166 + "\n")
     print("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t    Date: " + dateTimeNow.split("_")[0])
@@ -168,18 +160,11 @@ def returnBills(landDict, name, phn, address, returnMonth, rentMonth, countMonth
     print("\n\nTotal Amount: ", str(totalAmount))
     file.write("\n\nTotal Amount: " + str(totalAmount) + "\n")
     
-    print("Total Amount after fine: ", str(totalAmountAfterFine))
-    file.write("Total Amount after fine: " + str(totalAmountAfterFine) + "\n")
+    print("Final Amount (after fine): ", str(totalAmountAfterFine))
+    file.write("Final Amount (after fine): " + str(totalAmountAfterFine) + "\n")
             
     print("="*166)
     file.write("="*166 + "\n")
     file.write("\n")
     file.close()
     
-
-def changingAvailabilityReturn(landDict):
-    """
-    This function changes the availablity (on the text file) of the land after it has been returned
-    Has a parameter - landDict.
-    """
-    writeToLandDict(landDict)
