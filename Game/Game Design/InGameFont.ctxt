@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=InGameFont
+comment1.params=
+comment1.target=java.awt.Font\ loadFont()
+numComments=2

@@ -1,4 +1,6 @@
 import java.awt.Color;
+import javax.swing.border.BevelBorder;
+import javax.swing.BorderFactory;
 import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.Timer;
@@ -6,14 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.SwingConstants;
 import java.awt.RenderingHints;
 import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.ButtonModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class WelcomeToGame {
     private JFrame loadingFrame;
@@ -37,7 +41,7 @@ public class WelcomeToGame {
         loadingPanel.setLayout(null); //setting layout to null
 
         //loading the image from system
-        ImageIcon imageIcon = new ImageIcon("D:/Arpeet/College/Programming/java programming/Game Design Images/gameLogoBright.jpg");
+        ImageIcon imageIcon = new ImageIcon("../Game Design Images/gameLogoBright.jpg");
         Image image = imageIcon.getImage().getScaledInstance(500, 350, Image.SCALE_SMOOTH); //better image scaling algorithm
     
         //creating a JLabel with the image
@@ -137,7 +141,7 @@ public class WelcomeToGame {
         InGameCursor.setCustomCursor(panel);
 
         //loading the background image
-        ImageIcon backgroundImageIcon = new ImageIcon("D:/Arpeet/College/Programming/java programming/Game Design Images/8BitCastle.jpg");
+        ImageIcon backgroundImageIcon = new ImageIcon("../Game Design Images/8BitCastle.jpg");
         //a variable is created of object type ImageIcon which is a subclass of Image, takes path as argument
         Image backgroundImage = backgroundImageIcon.getImage().getScaledInstance(800, 550, Image.SCALE_DEFAULT);
         /*extracts image from backgroundImageIcon using get, then uses getScaledInstance() for scaling imaging to needed size, Image.SCALE_DEFAULT is
@@ -150,8 +154,59 @@ public class WelcomeToGame {
         JLabel titleLabel = new JLabel("LOBOTOMY  KAISEN");
         titleLabel.setFont(new Font("Karate", Font.BOLD, 53));
         titleLabel.setForeground(Color.WHITE); //setting text color
-        titleLabel.setBounds(140, 450, 700, 50); //setting bounds for positioning
+        titleLabel.setBounds(140, 450, 700, 60); //setting bounds for positioning
         backgroundLabel.add(titleLabel); //adding the label to the background label(over image)
+        
+        //creating buttons to go forward with the game
+        //new game button
+        JButton startGame = new JButton("NEW GAME");
+        startGame.setFont(new Font("Karate", Font.PLAIN, 33));
+        startGame.setBounds(275, 60, 240, 55);
+        startGame.setForeground(Color.BLACK);
+        startGame.setBackground(new Color(30, 50, 90, 255)); //transparency of 255(max)
+        startGame.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
+        startGame.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
+        backgroundLabel.add(startGame); //adding button to image bg
+        
+        //continue game button
+        JButton continueGame = new JButton("CONTINUE");
+        continueGame.setFont(new Font("Karate", Font.PLAIN, 33));
+        continueGame.setBounds(275, 130, 240, 55);
+        continueGame.setForeground(Color.BLACK);
+        continueGame.setBackground(new Color(30, 50, 90, 255)); //transparency of 255
+        continueGame.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
+        continueGame.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
+        backgroundLabel.add(continueGame); //adding button to image bg
+        
+        //continue game by loading button
+        JButton loadGame = new JButton("LOAD");
+        loadGame.setFont(new Font("Karate", Font.PLAIN, 33));
+        loadGame.setBounds(275, 200, 240, 55);
+        loadGame.setForeground(Color.BLACK);
+        loadGame.setBackground(new Color(30, 50, 90, 255)); //transparency of 255
+        loadGame.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
+        loadGame.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
+        backgroundLabel.add(loadGame); //adding button to image bg
+        
+        //options button
+        JButton optionsButton = new JButton("OPTIONS");
+        optionsButton.setFont(new Font("Karate", Font.PLAIN, 33));
+        optionsButton.setBounds(275, 270, 240, 55);
+        optionsButton.setForeground(Color.BLACK);
+        optionsButton.setBackground(new Color(30, 50, 90, 255)); //transparency of 255
+        optionsButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
+        optionsButton.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
+        backgroundLabel.add(optionsButton); //adding button to image bg
+        
+        //exit game button
+        JButton exitButton = new JButton("EXIT");
+        exitButton.setFont(new Font("Karate", Font.PLAIN, 33));
+        exitButton.setBounds(275, 340, 240, 55);
+        exitButton.setForeground(Color.BLACK);
+        exitButton.setBackground(new Color(30, 50, 90, 255)); //transparency of 255
+        exitButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
+        exitButton.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
+        backgroundLabel.add(exitButton); //adding button to image bg
         
         mainFrame.add(panel);
         mainFrame.setTitle("Game");
@@ -160,7 +215,7 @@ public class WelcomeToGame {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
-
+    
     public static void main(String[] args) {
         WelcomeToGame loading = new WelcomeToGame();
         loading.startLoading();

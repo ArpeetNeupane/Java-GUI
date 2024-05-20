@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=InGameCursor
+comment1.params=component
+comment1.target=void\ setCustomCursor(javax.swing.JComponent)
+numComments=2
