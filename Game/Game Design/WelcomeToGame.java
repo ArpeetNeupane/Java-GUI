@@ -12,20 +12,25 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 import javax.swing.SwingConstants;
-import java.awt.RenderingHints;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
-import javax.swing.ButtonModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class WelcomeToGame {
     private JFrame loadingFrame;
     private JPanel loadingPanel;
     private JProgressBar progressBar;
     private JLabel progressLabel;
-    private Timer timer;
+    private Timer timer, audioTimer, animationTimer;
     private int progress;
+    private JLabel imageLabel;
+    private int yPosition;
+    private int yVelocity;
+    //constants
+    private final int gravity = 1; //added value to yVelocity each fall to simulate effect of gravity
+    private final int bounceDamping = 15; //decreased value to yVelocity after each bounce
+    private final int bounceBoundary = 70; //bouncing boundary
 
     public WelcomeToGame() {
         loadingFrame = new JFrame("Loading");
@@ -33,20 +38,36 @@ public class WelcomeToGame {
         loadingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadingFrame.setLayout(null);
         loadingFrame.setLocationRelativeTo(null);
-
+        
+        //initializing the AudioPlayer and start playing background music
+        AudioPlayer.playMusic("../Game Design Audio/Bg/cosmicDrift.wav");
+        //delaying the audio playback by 1 seconds (1000 milliseconds)
+        audioTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AudioPlayer.playBg();
+            }
+        });
+        audioTimer.setRepeats(false); //making sure that the timer only runs once
+        audioTimer.start();
+        
         //create  panel for loading sreen
         loadingPanel = new JPanel();
         loadingPanel.setBackground(new Color(240, 240, 240));
         loadingPanel.setBounds(0, 0, 800, 400); //setting bounds
         loadingPanel.setLayout(null); //setting layout to null
-
+        
         //loading the image from system
         ImageIcon imageIcon = new ImageIcon("../Game Design Images/gameLogoBright.jpg");
-        Image image = imageIcon.getImage().getScaledInstance(500, 350, Image.SCALE_SMOOTH); //better image scaling algorithm
-    
+        Image image = imageIcon.getImage().getScaledInstance(500, 350, Image.SCALE_SMOOTH); //smooth image scaling algorithm
         //creating a JLabel with the image
         JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setBounds(180, 100, 450, 250);
+        
+        //setting the initial position for animation very high for falling effect
+        yPosition = -imageLabel.getHeight();
+        yVelocity = 26; //initial falling speed
+        imageLabel.setBounds(180, yPosition, 450, 250);
         
         //creating a JLabel for the popping label
         JLabel poppingLabel = new JLabel("Going  With  The  Flow!");
@@ -59,7 +80,7 @@ public class WelcomeToGame {
         
         //creating a timer to gradually increase the label's visibility
         Timer poppingTimer = new Timer(30, new ActionListener() {
-            int visibilityIndex = 0; //initial alpha value at 0
+            int visibilityIndex = 0; //initial alpha/opacity value at 0
             @Override
             public void actionPerformed(ActionEvent e) {
                 visibilityIndex += 3; //increasing visibilityIndex value for transparency every time ActionListener is fired(every 30 millisecond)
@@ -81,7 +102,7 @@ public class WelcomeToGame {
 
         //creating label that shows progress in numbers
         progressLabel = new JLabel("0%");
-        progressLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        progressLabel.setHorizontalAlignment(SwingConstants.CENTER); //centers the progressLabel which shows in percentage loading completion
         progressLabel.setForeground(new Color(16, 23, 32));
         progressLabel.setFont(new Font("Arial", Font.BOLD, 20));
         progressLabel.setBounds(0, 500, 800, 30);
@@ -120,6 +141,34 @@ public class WelcomeToGame {
                 progressLabel.setText(String.valueOf(progress) + "%");
             }
         });
+        
+        //animation timer configuration for the falling and bouncing effect
+        animationTimer = new Timer(20, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //updating the yPosition by adding the current yVelocity
+                yPosition += yVelocity;
+                //increasing the yVelocity by gravity to simulate acceleration
+                yVelocity += gravity;
+    
+                //checking if the label has reached the bounce boundary
+                if (yPosition >= bounceBoundary) {
+                    //invert the velocity for the simulation a bounce
+                    yVelocity = -yVelocity;
+                    //reduce the velocity for the simulation of energy loss
+                    yVelocity += bounceDamping;
+                    //ensuring the label stays within the bounce boundary
+                    yPosition = bounceBoundary;
+                }
+    
+                //updating the label's position
+                imageLabel.setBounds(180, yPosition, imageLabel.getWidth(), imageLabel.getHeight());
+                //repainting of the frame to reflect the new position, it is a needed line which tells java to repaint loading screen to reflect change
+                loadingFrame.repaint();
+            }
+        });
+
+        animationTimer.start();
     }
 
     public void startLoading() {
@@ -207,6 +256,31 @@ public class WelcomeToGame {
         exitButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); //border type
         exitButton.setFocusPainted(false); //removing the dotted border around text of button which appears when it is clicked
         backgroundLabel.add(exitButton); //adding button to image bg
+        
+        //action listeners for button
+        //SFX when button is clicked
+        ActionListener buttonClickListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //initializing the AudioPlayer and giving file path
+                AudioPlayer.buttonClickSounds("../Game Design Audio/SFX/poingReworked.wav");
+                AudioPlayer.playSFX();
+            }
+        };
+        //adding action listener for mouse click SFX to all buttons
+        startGame.addActionListener(buttonClickListener);
+        continueGame.addActionListener(buttonClickListener);
+        loadGame.addActionListener(buttonClickListener);
+        optionsButton.addActionListener(buttonClickListener);
+        exitButton.addActionListener(buttonClickListener); 
+        
+        //exit button
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0); //exiting the application
+            }
+        });
         
         mainFrame.add(panel);
         mainFrame.setTitle("Game");

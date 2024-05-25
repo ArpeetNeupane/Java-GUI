@@ -6,6 +6,13 @@ import javax.swing.JComponent;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
 
 public class InGameCursor {
     public static void setCustomCursor(JComponent component) { //parameter component which accepts any subclass of JComponent such asJPanel
@@ -13,7 +20,7 @@ public class InGameCursor {
         //loading custom cursor image from the system
         BufferedImage/*class*/ circleCursor = null;
         try {
-            circleCursor = ImageIO.read(new File("D:/Arpeet/College/Programming/java programming/Game Design Images/circleCursor2.png"));
+            circleCursor = ImageIO.read(new File("../Game Design Images/circleCursor2.png"));
         } catch (IOException e) {
             e.printStackTrace();//exact exception and where it occured, from where it occured
         }
@@ -27,3 +34,4 @@ public class InGameCursor {
         }
     }
 }
+
